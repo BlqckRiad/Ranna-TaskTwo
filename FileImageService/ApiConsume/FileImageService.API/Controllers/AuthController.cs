@@ -22,6 +22,7 @@ namespace FileImageService.API.Controllers
         }
 
         /// <summary>
+        /// sa
         /// Kullanıcı girişi yapar ve JWT token döner
         /// </summary>
         /// <param name="loginDto">Kullanıcı giriş bilgileri</param>
@@ -29,8 +30,6 @@ namespace FileImageService.API.Controllers
         /// <response code="200">Başarılı giriş</response>
         /// <response code="401">Geçersiz kullanıcı bilgileri</response>
         [HttpPost("login")]
-        [ProducesResponseType(typeof(TokenDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult Login([FromBody] LoginDto loginDto)
         {
             // Burada normalde kullanıcı doğrulaması yapılır

@@ -123,7 +123,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 
 // JWT Middleware
-app.UseMiddleware<JwtMiddleware>();
+//app.UseMiddleware<JwtMiddleware>();
 
 // Use Authentication and Authorization
 app.UseAuthentication();
