@@ -1,0 +1,166 @@
+FILE IMAGE SERVICE API DOKÜMANTASYONU
+====================================
+
+GENEL BİLGİLER
+--------------
+Base URL: http://localhost:5000/api
+Tüm istekler için JWT token gereklidir
+Token almak için /api/auth/login endpoint'ini kullanın
+
+KİMLİK DOĞRULAMA
+----------------
+POST /api/auth/login
+Content-Type: application/json
+
+Request Body:
+{
+    "username": "admin",
+    "password": "123456"
+}
+veya
+{
+    "username": "user",
+    "password": "123456"
+}
+
+Response:
+{
+    "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+    "expiration": "2024-03-21T15:30:00"
+}
+
+ÜRÜN YÖNETİMİ
+-------------
+
+1. Tüm Ürünleri Listele
+-----------------------
+GET /api/products
+Authorization: Bearer {token}
+
+Yetki: User, Admin
+
+Response:
+[
+    {
+        "id": 1,
+        "name": "Laptop",
+        "code": "LAP001",
+        "price": 15000.00,
+        "createdDate": "2024-03-21T10:00:00",
+        "imagePath": "/images/laptop.jpg",
+        "isActive": true
+    }
+]
+
+2. Ürün Detayı Getir
+-------------------
+GET /api/products/{id}
+Authorization: Bearer {token}
+
+Yetki: User, Admin
+
+Response:
+{
+    "id": 1,
+    "name": "Laptop",
+    "code": "LAP001",
+    "price": 15000.00,
+    "createdDate": "2024-03-21T10:00:00",
+    "imagePath": "/images/laptop.jpg",
+    "isActive": true
+}
+
+3. Yeni Ürün Ekle
+----------------
+POST /api/products
+Authorization: Bearer {token}
+Content-Type: application/json
+
+Request Body:
+{
+    "name": "Mouse",
+    "code": "MOU001",
+    "price": 250.00,
+    "imagePath": "/images/mouse.jpg"
+}
+
+Yetki: Admin
+
+Response: 201 Created
+{
+    "id": 2,
+    "name": "Mouse",
+    "code": "MOU001",
+    "price": 250.00,
+    "createdDate": "2024-03-21T10:30:00",
+    "imagePath": "/images/mouse.jpg",
+    "isActive": true
+}
+
+4. Ürün Güncelle
+---------------
+PUT /api/products/{id}
+Authorization: Bearer {token}
+Content-Type: application/json
+
+Request Body:
+{
+    "id": 2,
+    "name": "Gaming Mouse",
+    "code": "MOU001",
+    "price": 350.00,
+    "imagePath": "/images/gaming-mouse.jpg",
+    "isActive": true
+}
+
+Yetki: Admin
+
+Response: 200 OK
+{
+    "id": 2,
+    "name": "Gaming Mouse",
+    "code": "MOU001",
+    "price": 350.00,
+    "createdDate": "2024-03-21T10:30:00",
+    "imagePath": "/images/gaming-mouse.jpg",
+    "isActive": true
+}
+
+5. Ürün Sil
+----------
+DELETE /api/products/{id}
+Authorization: Bearer {token}
+
+Yetki: Admin
+
+Response: 204 No Content
+
+HATA KODLARI
+-----------
+200: Başarılı
+201: Oluşturuldu
+204: İçerik Yok
+400: Geçersiz İstek
+401: Yetkisiz Erişim
+404: Bulunamadı
+
+SWAGGER UI
+----------
+API dokümantasyonuna Swagger UI üzerinden erişebilirsiniz:
+http://localhost:5000/swagger
+
+Swagger UI üzerinden:
+- Tüm endpoint'leri görebilirsiniz
+- İstekleri test edebilirsiniz
+- Request/Response modellerini inceleyebilirsiniz
+- JWT token ile yetkilendirme yapabilirsiniz
+
+NOTLAR
+------
+1. Token 1 saat geçerlidir
+2. İki farklı kullanıcı tipi vardır:
+   - Admin (username: admin, password: 123456)
+   - User (username: user, password: 123456)
+3. Her istekte token kontrolü yapılır
+4. Rol bazlı yetkilendirme aktiftir
+5. Token geçersizse veya yetki yoksa 401 Unauthorized hatası döner 
